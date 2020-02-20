@@ -14,6 +14,8 @@ Authors@R: c(
            comment = c(ORCID = "0000-0001-9798-0460")))       
 Description: This package provides a series of functions designed to make complicated spatial operations in R much easier. Users can calculate in-water distances between points, move points outside a shapefile to the closest location within the shapefile, and cluster points within a given radius. More functions will be added in the future.
 License: GPL-3
+Depends: 
+     R (>= 3.5.0)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.0.2
@@ -22,7 +24,6 @@ Imports:
     dplyr,
     fasterize,
     gdistance,
-    progress,
     raster,
     rlang,
     sf

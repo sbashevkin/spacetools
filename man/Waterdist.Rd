@@ -11,7 +11,9 @@ Waterdist(
   Latitude_column,
   Longitude_column,
   PointID_column,
-  Points_crs = 4326
+  Points_crs = 4326,
+  Calculation_crs = "+proj=utm +zone=10 ellps=WGS84",
+  Grid_size = 75
 )
 }
 \arguments{
@@ -28,12 +30,22 @@ Waterdist(
 \item{PointID_column}{The unquoted name of the column in the Points dataframe with the unique identifier of each point.}
 
 \item{Points_crs}{Coordinate reference system for your points dataframe. Integer with the EPSG code or character with proj4string}
+
+\item{Calculation_crs}{Coordinate reference system used for the distance calculation. If a latitude/longitude system are used, errors will be returned since these calculations assume a planar surface. Defaults to \code{Calculation_crs = "+proj=utm +zone=10 ellps=WGS84"}.}
+
+\item{Grid_size}{Gride size (in meters) used to rasterize the map. Defaults to 75.}
 }
 \value{
 Distance matrix.
 }
 \description{
 Calculate a distance matrix for a set of points based on in-water distances, using a raster-based approach
+}
+\examples{
+Points <- data.frame(Latitude = c(38.04813, 38.05920, 37.94900, 38.23615, 38.47387),
+Longitude = c(-121.9149, -121.8684, -121.5591, -121.6735, -121.5844),
+ID = c("FMWT 508", "FMWT 513", "FMWT 915", "FMWT 723", "FMWT 796"))
+distance<-Waterdist(spacetools::Delta, Points, Shape_Area, Latitude, Longitude, ID)
 }
 \keyword{distance}
 \keyword{raster}
