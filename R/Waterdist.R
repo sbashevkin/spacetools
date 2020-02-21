@@ -30,14 +30,14 @@ Waterdist <- function(Water_map,
                       Calculation_crs = "+proj=utm +zone=10 ellps=WGS84",
                       Grid_size = 75){
 
-  pb<-utils::txtProgressBar(min = 0, max = 100)
+  pb<-utils::txtProgressBar(min = 0, max = 100, style=3)
 
   Attribute<-rlang::enquo(Attribute)
   Latitude_column<-rlang::enquo(Latitude_column)
   Longitude_column<-rlang::enquo(Longitude_column)
   PointID_column<-rlang::enquo(PointID_column)
 
-  utils::setTxtProgressBar(pb, 5)
+  utils::setTxtProgressBar(pb, 2)
 
   Points <- Points%>%
     dplyr::select(!!Longitude_column, !!Latitude_column, !!PointID_column)%>%
@@ -53,7 +53,7 @@ Waterdist <- function(Water_map,
   Points_joined<-sf::st_join(Points, Water_map, join = sf::st_intersects)%>%
     dplyr::arrange(!!PointID_column)
 
-  utils::setTxtProgressBar(pb, 10)
+  utils::setTxtProgressBar(pb, 5)
 
   # If all points are not within polygon, replace point outside polygon with closest point within polygon.
   if(!all(!is.na(dplyr::pull(Points_joined, !!Attribute)))){
@@ -61,7 +61,7 @@ Waterdist <- function(Water_map,
       dplyr::arrange(!!PointID_column)
   }
 
-  utils::setTxtProgressBar(pb, 20)
+  utils::setTxtProgressBar(pb, 10)
 
   # Are all points in the water polygon now?
 
@@ -81,6 +81,8 @@ Waterdist <- function(Water_map,
   raster::extent(r) <- raster::extent(c(mapextent["xmin"], mapextent["xmax"], mapextent["ymin"], mapextent["ymax"]))
   rp <- fasterize::fasterize(Water_map, r)
   rp[is.na(rp)] <- 0
+
+  utils::setTxtProgressBar(pb, 15)
 
   # measure distances between points within the polygon (i.e. water distances)
   # using the mean function in 16 directions (knight and one-cell queen moves)
