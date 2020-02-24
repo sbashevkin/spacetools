@@ -66,7 +66,7 @@ Waterdist <- function(Water_map,
 
   # If all points are not within polygon, replace point outside polygon with closest point within polygon.
   if(!all(!is.na(Points_joined$Inside))){
-    Points_joined<-pointmover(Points_joined, Inside, Water_map)%>%
+    Points_joined<-Pointmover(Points_joined, Inside, Water_map)%>%
       dplyr::arrange(!!PointID_column)
   }
 

@@ -6,7 +6,7 @@
 #' @param Shapefile Object of class sf representing the shapefile you want all points to fall within.
 #' @export
 
-pointmover <- function(Data, Attribute, Shapefile){
+Pointmover <- function(Data, Attribute, Shapefile){
   Attribute <- rlang::enquo(Attribute)
   mappoints<-sf::st_cast(Shapefile, "POINT", warn=F)
   badpoints<-dplyr::filter(Data, is.na(!!Attribute))
