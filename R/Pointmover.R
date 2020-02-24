@@ -12,8 +12,12 @@ pointmover <- function(Data, Attribute, Shapefile){
   badpoints<-dplyr::filter(Data, is.na(!!Attribute))
   new<-mappoints[sf::st_nearest_feature(badpoints, mappoints),]
 
-  badpoints$geometry<-new$geometry
-  out<-rbind(badpoints, dplyr::filter(Data, !is.na(!!Attribute)))
+  new<-new%>%
+    dplyr::bind_cols(badpoints%>%
+                sf::st_drop_geometry()%>%
+                dplyr::select(-!!Attribute))
+
+  out<-rbind(new, dplyr::filter(Data, !is.na(!!Attribute)))
   return(out)
 
 }

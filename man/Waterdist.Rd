@@ -7,7 +7,6 @@
 Waterdist(
   Water_map,
   Points,
-  Attribute,
   Latitude_column,
   Longitude_column,
   PointID_column,
@@ -20,8 +19,6 @@ Waterdist(
 \item{Water_map}{Object of class sf representing a map of all waterways in your region of interest}
 
 \item{Points}{A dataframe of points with latitude and longitude}
-
-\item{Attribute}{The name of a shapefile attribute that has values for all water bodies.}
 
 \item{Latitude_column}{The unquoted name of the column in the Points dataframe representing Latitude.}
 
@@ -42,10 +39,10 @@ Distance matrix.
 Calculate a distance matrix for a set of points based on in-water distances, using a raster-based approach
 }
 \examples{
-Points <- data.frame(Latitude = c(38.04813, 38.05920, 37.94900, 38.23615, 38.47387),
+Points <- tibble::tibble(Latitude = c(38.04813, 38.05920, 37.94900, 38.23615, 38.47387),
 Longitude = c(-121.9149, -121.8684, -121.5591, -121.6735, -121.5844),
 ID = c("FMWT 508", "FMWT 513", "FMWT 915", "FMWT 723", "FMWT 796"))
-distance<-Waterdist(spacetools::Delta, Points, Shape_Area, Latitude, Longitude, ID)
+distance<-Waterdist(spacetools::Delta, Points, Latitude, Longitude, ID)
 }
 \keyword{distance}
 \keyword{raster}

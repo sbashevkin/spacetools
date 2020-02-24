@@ -3,3 +3,4 @@
 export(Waterdist)
 export(pointmover)
 importFrom(magrittr,"%>%")
+importFrom(rlang,.data)
