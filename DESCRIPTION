@@ -22,12 +22,13 @@ RoxygenNote: 7.0.2
 Imports: 
     magrittr,
     dplyr,
-    fasterize,
     gdistance,
     raster,
     rlang,
     sf,
-    tibble
+    tibble,
+    stars,
+    methods
 URL: https://github.com/sbashevkin/spacetools
 BugReports: https://github.com/sbashevkin/spacetools/issues
 Language: en-US

@@ -6,6 +6,7 @@
 \usage{
 Waterdist(
   Water_map,
+  Water_map_transitioned = NULL,
   Points,
   Latitude_column,
   Longitude_column,
@@ -17,6 +18,8 @@ Waterdist(
 }
 \arguments{
 \item{Water_map}{Object of class sf representing a map of all waterways in your region of interest}
+
+\item{Water_map_transitioned}{A rasterized, transitioned, and geo-corrected version of the water map. This is optional to save time if you will be running this function frequently with the same base map.}
 
 \item{Points}{A dataframe of points with latitude and longitude}
 
@@ -42,7 +45,8 @@ Calculate a distance matrix for a set of points based on in-water distances, usi
 Points <- tibble::tibble(Latitude = c(38.04813, 38.05920, 37.94900, 38.23615, 38.47387),
 Longitude = c(-121.9149, -121.8684, -121.5591, -121.6735, -121.5844),
 ID = c("FMWT 508", "FMWT 513", "FMWT 915", "FMWT 723", "FMWT 796"))
-distance<-Waterdist(spacetools::Delta, Points, Latitude, Longitude, ID)
+distance<-Waterdist(Water_map = spacetools::Delta, Points = Points, Latitude_column = Latitude,
+Longitude_column = Longitude, PointID_column = ID)
 }
 \keyword{distance}
 \keyword{raster}

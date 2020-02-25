@@ -2,6 +2,7 @@
 #'
 #' Calculate a distance matrix for a set of points based on in-water distances, using a raster-based approach
 #' @param Water_map Object of class sf representing a map of all waterways in your region of interest
+#' @param Water_map_transitioned A rasterized, transitioned, and geo-corrected version of the water map. This is optional to save time if you will be running this function frequently with the same base map.
 #' @param Points A dataframe of points with latitude and longitude
 #' @param Latitude_column The unquoted name of the column in the Points dataframe representing Latitude.
 #' @param Longitude_column The unquoted name of the column in the Points dataframe representing Longitude.
@@ -11,16 +12,20 @@
 #' @param Calculation_crs Coordinate reference system used for the distance calculation. If a latitude/longitude system are used, errors will be returned since these calculations assume a planar surface. Defaults to \code{Calculation_crs = "+proj=utm +zone=10 ellps=WGS84"}.
 #' @keywords spatial distance water raster
 #' @importFrom magrittr %>%
+#' @importFrom methods as
 #' @importFrom rlang .data
+#' @import stars
 #' @return Distance matrix.
 #' @examples
 #' Points <- tibble::tibble(Latitude = c(38.04813, 38.05920, 37.94900, 38.23615, 38.47387),
 #' Longitude = c(-121.9149, -121.8684, -121.5591, -121.6735, -121.5844),
 #' ID = c("FMWT 508", "FMWT 513", "FMWT 915", "FMWT 723", "FMWT 796"))
-#' distance<-Waterdist(spacetools::Delta, Points, Latitude, Longitude, ID)
+#' distance<-Waterdist(Water_map = spacetools::Delta, Points = Points, Latitude_column = Latitude,
+#' Longitude_column = Longitude, PointID_column = ID)
 #' @export
 
 Waterdist <- function(Water_map,
+                      Water_map_transitioned=NULL,
                       Points,
                       Latitude_column,
                       Longitude_column,
@@ -66,6 +71,9 @@ Waterdist <- function(Water_map,
 
   # If all points are not within polygon, replace point outside polygon with closest point within polygon.
   if(!all(!is.na(Points_joined$Inside))){
+
+    Inside <- rlang::sym("Inside")
+    Inside <- rlang::enquo(Inside)
     Points_joined<-Pointmover(Points_joined, Inside, Water_map)%>%
       dplyr::arrange(!!PointID_column)
   }
@@ -78,35 +86,30 @@ Waterdist <- function(Water_map,
     stop("Points could not be moved within shapefile.")
   }
 
-  # rasterize the polygon and designate water = 1, land = 0
-  # using Grid_size m x Grid_size m grid squares and rasterizing the extent of the Water_map
+  if(is.null(Water_map_transitioned)){
+    # rasterize the polygon and designate water = 1, land = 0
+    # using Grid_size m x Grid_size m grid squares and rasterizing the extent of the Water_map
 
-  mapextent<-sf::st_bbox(Water_map)
+    rp <- stars::st_rasterize(Water_map, template=stars::st_as_stars(sf::st_bbox(Water_map), values=0, dx=75, dy=75), options="ALL_TOUCHED=TRUE")
+    rp <- as(rp, Class = "Raster")
 
-  cols <- round((mapextent["xmax"] - mapextent["xmin"]) / Grid_size) # 1394 columns
-  rows <- round((mapextent["ymax"] - mapextent["ymin"]) / Grid_size) # 1500 rows
+    utils::setTxtProgressBar(pb, 20)
 
-  r <- raster::raster(ncol = cols, nrow = rows)
-  raster::extent(r) <- raster::extent(c(mapextent["xmin"], mapextent["xmax"], mapextent["ymin"], mapextent["ymax"]))
-  rp <- fasterize::fasterize(Water_map, r)
-  rp[is.na(rp)] <- 0
+    # measure distances between points within the polygon (i.e. water distances)
+    # using the mean function in 16 directions (knight and one-cell queen moves)
+    # first need to measure transitions between grid squares
+    # requires geographic correction
+    tp <- gdistance::transition(rp, mean, 16)
 
-  utils::setTxtProgressBar(pb, 20)
+    utils::setTxtProgressBar(pb, 80)
 
-  # measure distances between points within the polygon (i.e. water distances)
-  # using the mean function in 16 directions (knight and one-cell queen moves)
-  # first need to measure transitions between grid squares
-  # requires geographic correction
+    Water_map_transitioned <- gdistance::geoCorrection(tp, "c", scl = FALSE)
 
-  tp <- gdistance::transition(rp, mean, 16)
-
-  utils::setTxtProgressBar(pb, 80)
-
-  tpc <- gdistance::geoCorrection(tp, "c", scl = FALSE)
+  }
 
   utils::setTxtProgressBar(pb, 90)
 
-  waterDist <- gdistance::costDistance(tpc, sf::st_coordinates(Points_joined))
+  waterDist <- gdistance::costDistance(Water_map_transitioned, sf::st_coordinates(Points_joined))
 
   waterDist <- as.matrix(waterDist)
   colnames(waterDist) <- rownames(waterDist) <- Points_joined%>% sf::st_drop_geometry()%>% dplyr::pull(!!PointID_column)

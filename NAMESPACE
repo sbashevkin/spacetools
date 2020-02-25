@@ -2,5 +2,7 @@
 
 export(Pointmover)
 export(Waterdist)
+import(stars)
 importFrom(magrittr,"%>%")
+importFrom(methods,as)
 importFrom(rlang,.data)
