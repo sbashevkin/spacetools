@@ -25,12 +25,12 @@
 #' @export
 
 Waterdist <- function(Water_map,
-                      Water_map_transitioned=NULL,
                       Points,
                       Latitude_column,
                       Longitude_column,
                       PointID_column,
                       Points_crs = 4326,
+                      Water_map_transitioned=NULL,
                       Calculation_crs = "+proj=utm +zone=10 ellps=WGS84",
                       Grid_size = 75){
 
