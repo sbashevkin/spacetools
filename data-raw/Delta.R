@@ -2,4 +2,6 @@
 
 Delta <- sf::read_sf(file.path("data-raw", "DeltaShapefile"))
 
-usethis::use_data(Delta)
+Delta_transitioned <- spacetools::Maptransitioner(Delta)
+
+usethis::use_data(Delta, Delta_transitioned, overwrite = TRUE)

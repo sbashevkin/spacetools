@@ -28,7 +28,8 @@ Imports:
     sf,
     tibble,
     stars,
-    methods
+    methods,
+    graphics
 URL: https://github.com/sbashevkin/spacetools
 BugReports: https://github.com/sbashevkin/spacetools/issues
 Language: en-US

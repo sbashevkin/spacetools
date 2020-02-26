@@ -2,26 +2,41 @@
 #'
 #' Calculate a distance matrix for a set of points based on in-water distances, using a raster-based approach
 #' @param Water_map Object of class sf representing a map of all waterways in your region of interest
-#' @param Water_map_transitioned A rasterized, transitioned, and geo-corrected version of the water map. This is optional to save time if you will be running this function frequently with the same base map.
 #' @param Points A dataframe of points with latitude and longitude
 #' @param Latitude_column The unquoted name of the column in the Points dataframe representing Latitude.
 #' @param Longitude_column The unquoted name of the column in the Points dataframe representing Longitude.
 #' @param PointID_column The unquoted name of the column in the Points dataframe with the unique identifier of each point.
-#' @param Points_crs Coordinate reference system for your points dataframe. Integer with the EPSG code or character with proj4string
+#' @param Points_crs Coordinate reference system for your points dataframe. Integer with the EPSG code or character with proj4string.
+#' @param Water_map_transitioned A rasterized, transitioned, and geo-corrected version of the water map. This is optional to save time if you will be running this function frequently with the same base map.
 #' @param Grid_size Gride size (in meters) used to rasterize the map. Defaults to 75.
 #' @param Calculation_crs Coordinate reference system used for the distance calculation. If a latitude/longitude system are used, errors will be returned since these calculations assume a planar surface. Defaults to \code{Calculation_crs = "+proj=utm +zone=10 ellps=WGS84"}.
 #' @keywords spatial distance water raster
 #' @importFrom magrittr %>%
 #' @importFrom methods as
 #' @importFrom rlang .data
-#' @import stars
 #' @return Distance matrix.
+#' @seealso \code{\link{Maptransitioner}} \code{\link{Pointmover}}
 #' @examples
-#' Points <- tibble::tibble(Latitude = c(38.04813, 38.05920, 37.94900, 38.23615, 38.47387),
-#' Longitude = c(-121.9149, -121.8684, -121.5591, -121.6735, -121.5844),
-#' ID = c("FMWT 508", "FMWT 513", "FMWT 915", "FMWT 723", "FMWT 796"))
+#' library(tibble)
+#'
+#' Points <- tibble(Latitude = c(38.23333, 38.04813, 38.05920,
+#'                                       37.94900, 38.23615, 38.47387),
+#'                          Longitude = c(-121.4889, -121.9149, -121.8684,
+#'                                        -121.5591, -121.6735, -121.5844),
+#'                          ID = c("EMP NZP02", "FMWT 508", "FMWT 513",
+#'                                 "FMWT 915", "FMWT 723", "FMWT 796"))
+#'
+#' \dontrun{
 #' distance<-Waterdist(Water_map = spacetools::Delta, Points = Points, Latitude_column = Latitude,
-#' Longitude_column = Longitude, PointID_column = ID)
+#'                     Longitude_column = Longitude, PointID_column = ID)
+#'                     }
+#'
+#' # Including a pre-transitioned map to save time.
+#' # See Maptransitioner for creating this pre-transitioned map.
+#'
+#' distance<-Waterdist(Water_map = spacetools::Delta, Points = Points, Latitude_column = Latitude,
+#'                     Longitude_column = Longitude, PointID_column = ID,
+#'                     Water_map_transitioned = spacetools::Delta_transitioned)
 #' @export
 
 Waterdist <- function(Water_map,
@@ -30,7 +45,7 @@ Waterdist <- function(Water_map,
                       Longitude_column,
                       PointID_column,
                       Points_crs = 4326,
-                      Water_map_transitioned=NULL,
+                      Water_map_transitioned = NULL,
                       Calculation_crs = "+proj=utm +zone=10 ellps=WGS84",
                       Grid_size = 75){
 
@@ -87,23 +102,8 @@ Waterdist <- function(Water_map,
   }
 
   if(is.null(Water_map_transitioned)){
-    # rasterize the polygon and designate water = 1, land = 0
-    # using Grid_size m x Grid_size m grid squares and rasterizing the extent of the Water_map
 
-    rp <- stars::st_rasterize(Water_map, template=stars::st_as_stars(sf::st_bbox(Water_map), values=0, dx=75, dy=75), options="ALL_TOUCHED=TRUE")
-    rp <- as(rp, Class = "Raster")
-
-    utils::setTxtProgressBar(pb, 20)
-
-    # measure distances between points within the polygon (i.e. water distances)
-    # using the mean function in 16 directions (knight and one-cell queen moves)
-    # first need to measure transitions between grid squares
-    # requires geographic correction
-    tp <- gdistance::transition(rp, mean, 16)
-
-    utils::setTxtProgressBar(pb, 80)
-
-    Water_map_transitioned <- gdistance::geoCorrection(tp, "c", scl = FALSE)
+    Water_map_transitioned <- Maptransitioner(Water_map = Water_map, Calculation_crs = Calculation_crs, Grid_size = Grid_size, Process_map = FALSE)
 
   }
 

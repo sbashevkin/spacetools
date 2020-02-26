@@ -6,20 +6,18 @@
 \usage{
 Waterdist(
   Water_map,
-  Water_map_transitioned = NULL,
   Points,
   Latitude_column,
   Longitude_column,
   PointID_column,
   Points_crs = 4326,
+  Water_map_transitioned = NULL,
   Calculation_crs = "+proj=utm +zone=10 ellps=WGS84",
   Grid_size = 75
 )
 }
 \arguments{
 \item{Water_map}{Object of class sf representing a map of all waterways in your region of interest}
-
-\item{Water_map_transitioned}{A rasterized, transitioned, and geo-corrected version of the water map. This is optional to save time if you will be running this function frequently with the same base map.}
 
 \item{Points}{A dataframe of points with latitude and longitude}
 
@@ -29,7 +27,9 @@ Waterdist(
 
 \item{PointID_column}{The unquoted name of the column in the Points dataframe with the unique identifier of each point.}
 
-\item{Points_crs}{Coordinate reference system for your points dataframe. Integer with the EPSG code or character with proj4string}
+\item{Points_crs}{Coordinate reference system for your points dataframe. Integer with the EPSG code or character with proj4string.}
+
+\item{Water_map_transitioned}{A rasterized, transitioned, and geo-corrected version of the water map. This is optional to save time if you will be running this function frequently with the same base map.}
 
 \item{Calculation_crs}{Coordinate reference system used for the distance calculation. If a latitude/longitude system are used, errors will be returned since these calculations assume a planar surface. Defaults to \code{Calculation_crs = "+proj=utm +zone=10 ellps=WGS84"}.}
 
@@ -42,11 +42,29 @@ Distance matrix.
 Calculate a distance matrix for a set of points based on in-water distances, using a raster-based approach
 }
 \examples{
-Points <- tibble::tibble(Latitude = c(38.04813, 38.05920, 37.94900, 38.23615, 38.47387),
-Longitude = c(-121.9149, -121.8684, -121.5591, -121.6735, -121.5844),
-ID = c("FMWT 508", "FMWT 513", "FMWT 915", "FMWT 723", "FMWT 796"))
+library(tibble)
+
+Points <- tibble(Latitude = c(38.23333, 38.04813, 38.05920,
+                                      37.94900, 38.23615, 38.47387),
+                         Longitude = c(-121.4889, -121.9149, -121.8684,
+                                       -121.5591, -121.6735, -121.5844),
+                         ID = c("EMP NZP02", "FMWT 508", "FMWT 513",
+                                "FMWT 915", "FMWT 723", "FMWT 796"))
+
+\dontrun{
 distance<-Waterdist(Water_map = spacetools::Delta, Points = Points, Latitude_column = Latitude,
-Longitude_column = Longitude, PointID_column = ID)
+                    Longitude_column = Longitude, PointID_column = ID)
+                    }
+
+# Including a pre-transitioned map to save time.
+# See Maptransitioner for creating this pre-transitioned map.
+
+distance<-Waterdist(Water_map = spacetools::Delta, Points = Points, Latitude_column = Latitude,
+                    Longitude_column = Longitude, PointID_column = ID,
+                    Water_map_transitioned = spacetools::Delta_transitioned)
+}
+\seealso{
+\code{\link{Maptransitioner}} \code{\link{Pointmover}}
 }
 \keyword{distance}
 \keyword{raster}

@@ -15,3 +15,10 @@
 #'   \item{geometry}{Shapefile polygon coordinates.}
 #' }
 "Delta"
+
+#' Rasterized and transitioned Delta shapefile
+#'
+#' Shapefile of delta waterways that has been rasterized and transitioned for Waterdist.
+#'
+#' @format a TransitionLayer from package \link{gdistance}.
+"Delta_transitioned"
