@@ -15,7 +15,7 @@ Maptransitioner(
 \arguments{
 \item{Water_map}{Object of class sf representing a map of all waterways in your region of interest}
 
-\item{Calculation_crs}{Coordinate reference system used for the distance calculation. If a latitude/longitude system are used, errors will be returned since these calculations assume a planar surface. Defaults to \code{Calculation_crs = "+proj=utm +zone=10 ellps=WGS84"}.}
+\item{Calculation_crs}{Coordinate reference system used for the calculation. If a latitude/longitude system are used, errors may be returned since some calculations assume a planar surface. Defaults to \code{Calculation_crs = "+proj=utm +zone=10 ellps=WGS84"}.}
 
 \item{Grid_size}{Gride size (in meters) used to rasterize the map. Defaults to 75.}
 

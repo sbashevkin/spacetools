@@ -21,17 +21,17 @@ Waterdist(
 
 \item{Points}{A dataframe of points with latitude and longitude}
 
-\item{Latitude_column}{The unquoted name of the column in the Points dataframe representing Latitude.}
+\item{Latitude_column}{The unquoted name of the column in the \code{Points} dataframe representing Latitude.}
 
-\item{Longitude_column}{The unquoted name of the column in the Points dataframe representing Longitude.}
+\item{Longitude_column}{The unquoted name of the column in the \code{Points} dataframe representing Longitude.}
 
-\item{PointID_column}{The unquoted name of the column in the Points dataframe with the unique identifier of each point.}
+\item{PointID_column}{The unquoted name of the column in the \code{Points} dataframe with the unique identifier of each point.}
 
-\item{Points_crs}{Coordinate reference system for your points dataframe. Integer with the EPSG code or character with proj4string.}
+\item{Points_crs}{Coordinate reference system for your \code{Points} dataframe. Integer with the EPSG code or character with proj4string.}
 
 \item{Water_map_transitioned}{A rasterized, transitioned, and geo-corrected version of the water map. This is optional to save time if you will be running this function frequently with the same base map.}
 
-\item{Calculation_crs}{Coordinate reference system used for the distance calculation. If a latitude/longitude system are used, errors will be returned since these calculations assume a planar surface. Defaults to \code{Calculation_crs = "+proj=utm +zone=10 ellps=WGS84"}.}
+\item{Calculation_crs}{Coordinate reference system used for the calculation. If a latitude/longitude system are used, errors may be returned since some calculations assume a planar surface. Defaults to \code{Calculation_crs = "+proj=utm +zone=10 ellps=WGS84"}.}
 
 \item{Grid_size}{Gride size (in meters) used to rasterize the map. Defaults to 75.}
 }

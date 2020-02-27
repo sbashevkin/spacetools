@@ -6,8 +6,6 @@
 #' @param Plot Should the rasterized map be plotted for inspection?
 #' @return A rasterized, transitioned, and geo-corrected map.
 #' @importFrom magrittr %>%
-#' @importFrom methods as
-#' @importFrom graphics "plot"
 #' @seealso \code{\link{Waterdist}}
 #' @examples
 #' Map <- Maptransitioner(spacetools::Delta)
@@ -33,11 +31,11 @@ Maptransitioner<-function(Water_map, Calculation_crs= "+proj=utm +zone=10 ellps=
   rp <- stars::st_rasterize(Water_map, template=stars::st_as_stars(sf::st_bbox(Water_map), values=0, dx=Grid_size, dy=Grid_size), options="ALL_TOUCHED=TRUE")
 
   if(Plot){
-    plot(rp)
+    graphics::plot(rp)
   }
 
 
-  rp <- as(rp, Class = "Raster")
+  rp <- methods::as(rp, Class = "Raster")
 
   utils::setTxtProgressBar(pb, 20)
 

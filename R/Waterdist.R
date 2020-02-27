@@ -3,13 +3,13 @@
 #' Calculate a distance matrix for a set of points based on in-water distances, using a raster-based approach
 #' @param Water_map Object of class sf representing a map of all waterways in your region of interest
 #' @param Points A dataframe of points with latitude and longitude
-#' @param Latitude_column The unquoted name of the column in the Points dataframe representing Latitude.
-#' @param Longitude_column The unquoted name of the column in the Points dataframe representing Longitude.
-#' @param PointID_column The unquoted name of the column in the Points dataframe with the unique identifier of each point.
-#' @param Points_crs Coordinate reference system for your points dataframe. Integer with the EPSG code or character with proj4string.
+#' @param Latitude_column The unquoted name of the column in the \code{Points} dataframe representing Latitude.
+#' @param Longitude_column The unquoted name of the column in the \code{Points} dataframe representing Longitude.
+#' @param PointID_column The unquoted name of the column in the \code{Points} dataframe with the unique identifier of each point.
+#' @param Points_crs Coordinate reference system for your \code{Points} dataframe. Integer with the EPSG code or character with proj4string.
 #' @param Water_map_transitioned A rasterized, transitioned, and geo-corrected version of the water map. This is optional to save time if you will be running this function frequently with the same base map.
 #' @param Grid_size Gride size (in meters) used to rasterize the map. Defaults to 75.
-#' @param Calculation_crs Coordinate reference system used for the distance calculation. If a latitude/longitude system are used, errors will be returned since these calculations assume a planar surface. Defaults to \code{Calculation_crs = "+proj=utm +zone=10 ellps=WGS84"}.
+#' @param Calculation_crs Coordinate reference system used for the calculation. If a latitude/longitude system are used, errors may be returned since some calculations assume a planar surface. Defaults to \code{Calculation_crs = "+proj=utm +zone=10 ellps=WGS84"}.
 #' @keywords spatial distance water raster
 #' @importFrom magrittr %>%
 #' @importFrom methods as
