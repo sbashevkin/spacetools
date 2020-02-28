@@ -9,6 +9,8 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![Travis build
 status](https://travis-ci.org/sbashevkin/spacetools.svg?branch=master)](https://travis-ci.org/sbashevkin/spacetools)
+[![Codecov test
+coverage](https://codecov.io/gh/sbashevkin/spacetools/branch/master/graph/badge.svg)](https://codecov.io/gh/sbashevkin/spacetools?branch=master)
 <!-- badges: end -->
 
 The goal of spacetools is to provide easy tools for spatial operations.
