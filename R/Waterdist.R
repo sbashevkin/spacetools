@@ -8,7 +8,7 @@
 #' @param PointID_column The unquoted name of the column in the \code{Points} dataframe with the unique identifier of each point.
 #' @param Points_crs Coordinate reference system for your \code{Points} dataframe. Integer with the EPSG code or character with proj4string.
 #' @param Water_map_transitioned A rasterized, transitioned, and geo-corrected version of the water map. This is optional to save time if you will be running this function frequently with the same base map.
-#' @param Grid_size Gride size (in meters) used to rasterize the map. Defaults to 75.
+#' @param Grid_size Grid size (in meters) used to rasterize the map. Defaults to 75.
 #' @param Calculation_crs Coordinate reference system used for the calculation. If a latitude/longitude system are used, errors may be returned since some calculations assume a planar surface. Defaults to \code{Calculation_crs = "+proj=utm +zone=10 ellps=WGS84"}.
 #' @keywords spatial distance water raster
 #' @importFrom magrittr %>%
@@ -29,7 +29,7 @@
 #' \dontrun{
 #' distance<-Waterdist(Water_map = spacetools::Delta, Points = Points, Latitude_column = Latitude,
 #'                     Longitude_column = Longitude, PointID_column = ID)
-#'                     }
+#'
 #'
 #' # Including a pre-transitioned map to save time.
 #' # See Maptransitioner for creating this pre-transitioned map.
@@ -37,6 +37,7 @@
 #' distance<-Waterdist(Water_map = spacetools::Delta, Points = Points, Latitude_column = Latitude,
 #'                     Longitude_column = Longitude, PointID_column = ID,
 #'                     Water_map_transitioned = spacetools::Delta_transitioned)
+#'                     }
 #' @export
 
 Waterdist <- function(Water_map,

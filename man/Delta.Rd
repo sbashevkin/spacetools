@@ -12,7 +12,7 @@
   \item{HYDRO_PO_1}{HYDRO_PO_1.}
   \item{HYDRO_24K_}{HYDRO_24K_.}
   \item{HNAME}{HNAME.}
-  \item{Shape_Leng}{Shape_Leng.}
+  \item{Shape_Leng}{Shape_Length}
   \item{Shape_Area}{Shape_Area.}
   \item{geometry}{Shapefile polygon coordinates.}
 }}

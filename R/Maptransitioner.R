@@ -8,7 +8,10 @@
 #' @importFrom magrittr %>%
 #' @seealso \code{\link{Waterdist}}
 #' @examples
+#' \dontrun{
 #' Map <- Maptransitioner(spacetools::Delta)
+#' }
+#'
 #' @export
 
 Maptransitioner<-function(Water_map, Calculation_crs= "+proj=utm +zone=10 ellps=WGS84", Grid_size = 75, Process_map = TRUE, Plot = FALSE){

@@ -69,5 +69,3 @@ Pointcluster <- function(Points,
       .
     }}
 }
-
-utils::globalVariables(".")

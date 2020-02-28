@@ -12,7 +12,7 @@ Authors@R: c(
            role = c("aut"),
            email = "simonis@dapperstats.com",
            comment = c(ORCID = "0000-0001-9798-0460")))       
-Description: This package provides a series of functions designed to make complicated spatial operations in R much easier. Users can calculate in-water distances between points, move points outside a shapefile to the closest location within the shapefile, and cluster points within a given radius. More functions will be added in the future.
+Description: This package provides a series of functions designed to make complicated spatial operations in R much easier. Applications are focused on aquatic distance related uses, with built in functionality for the Sacramento San Joaquin Delta. Users can calculate in-water distances between points, move points outside a shapefile to the closest location within the shapefile, and cluster points within a given radius. More functions will be added in the future.
 License: GPL-3
 Depends: 
      R (>= 3.5.0)
@@ -35,3 +35,6 @@ Imports:
 URL: https://github.com/sbashevkin/spacetools
 BugReports: https://github.com/sbashevkin/spacetools/issues
 Language: en-US
+Suggests: 
+    testthat (>= 2.1.0),
+    spelling

@@ -7,9 +7,14 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Travis build
+status](https://travis-ci.org/sbashevkin/spacetools.svg?branch=master)](https://travis-ci.org/sbashevkin/spacetools)
 <!-- badges: end -->
 
-The goal of spacetools is to …
+The goal of spacetools is to provide easy tools for spatial operations.
+Functionality is focused on aquatic systems and particularly the
+Sacramento San Joaquin Delta but the functions should be useful for
+other systems as well.
 
 ## Installation
 

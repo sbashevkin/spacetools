@@ -17,7 +17,7 @@ Maptransitioner(
 
 \item{Calculation_crs}{Coordinate reference system used for the calculation. If a latitude/longitude system are used, errors may be returned since some calculations assume a planar surface. Defaults to \code{Calculation_crs = "+proj=utm +zone=10 ellps=WGS84"}.}
 
-\item{Grid_size}{Gride size (in meters) used to rasterize the map. Defaults to 75.}
+\item{Grid_size}{Grid size (in meters) used to rasterize the map. Defaults to 75.}
 
 \item{Process_map}{Should the \code{Water_map} be processed by unioning all features and transforming to the \code{Calculation_crs}? This should almost always be set to \code{TRUE}, the default.}
 
@@ -30,7 +30,10 @@ A rasterized, transitioned, and geo-corrected map.
 Rasterize and transition a shapefile for input into \code{\link{Waterdist}}
 }
 \examples{
+\dontrun{
 Map <- Maptransitioner(spacetools::Delta)
+}
+
 }
 \seealso{
 \code{\link{Waterdist}}

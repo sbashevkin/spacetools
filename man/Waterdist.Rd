@@ -33,7 +33,7 @@ Waterdist(
 
 \item{Calculation_crs}{Coordinate reference system used for the calculation. If a latitude/longitude system are used, errors may be returned since some calculations assume a planar surface. Defaults to \code{Calculation_crs = "+proj=utm +zone=10 ellps=WGS84"}.}
 
-\item{Grid_size}{Gride size (in meters) used to rasterize the map. Defaults to 75.}
+\item{Grid_size}{Grid size (in meters) used to rasterize the map. Defaults to 75.}
 }
 \value{
 Distance matrix.
@@ -54,7 +54,7 @@ Points <- tibble(Latitude = c(38.23333, 38.04813, 38.05920,
 \dontrun{
 distance<-Waterdist(Water_map = spacetools::Delta, Points = Points, Latitude_column = Latitude,
                     Longitude_column = Longitude, PointID_column = ID)
-                    }
+
 
 # Including a pre-transitioned map to save time.
 # See Maptransitioner for creating this pre-transitioned map.
@@ -62,6 +62,7 @@ distance<-Waterdist(Water_map = spacetools::Delta, Points = Points, Latitude_col
 distance<-Waterdist(Water_map = spacetools::Delta, Points = Points, Latitude_column = Latitude,
                     Longitude_column = Longitude, PointID_column = ID,
                     Water_map_transitioned = spacetools::Delta_transitioned)
+                    }
 }
 \seealso{
 \code{\link{Maptransitioner}} \code{\link{Pointmover}}

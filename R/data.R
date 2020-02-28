@@ -10,7 +10,7 @@
 #'   \item{HYDRO_PO_1}{HYDRO_PO_1.}
 #'   \item{HYDRO_24K_}{HYDRO_24K_.}
 #'   \item{HNAME}{HNAME.}
-#'   \item{Shape_Leng}{Shape_Leng.}
+#'   \item{Shape_Leng}{Shape_Length}
 #'   \item{Shape_Area}{Shape_Area.}
 #'   \item{geometry}{Shapefile polygon coordinates.}
 #' }
@@ -22,3 +22,17 @@
 #'
 #' @format a TransitionLayer from package \link{gdistance}.
 "Delta_transitioned"
+
+#' Zooplankton sampling stations
+#'
+#' Zooplankton sampling stations in the Sacramento San Joaquin Delta from the zooper package.
+#'
+#' @format a tibble with 362 rows and 3 columns
+#' \describe{
+#'   \item{Station}{Sampling station name}
+#'   \item{Latitude}{Latitude in decimal degrees}
+#'   \item{Longitude}{Longitude in decimal degrees}
+#' }
+#'
+#' @seealso \code{\link{zooper}}
+"stations"
