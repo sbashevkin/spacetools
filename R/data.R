@@ -34,5 +34,5 @@
 #'   \item{Longitude}{Longitude in decimal degrees}
 #' }
 #'
-#' @seealso \code{\link{zooper}}
+#' @seealso \code{\link[zooper]{zooper}}
 "stations"
