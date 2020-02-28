@@ -1,6 +1,7 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: R
+dist: trusty
 cache: packages
 addons:
   apt:
@@ -9,6 +10,6 @@ addons:
       - gdal-bin
       - libproj-dev
       - libgdal1-dev
-      - libproj-dev
+      - libgeos-dev
 after_success:
   - Rscript -e 'covr::codecov()'
