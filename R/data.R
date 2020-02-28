@@ -34,5 +34,5 @@
 #'   \item{Longitude}{Longitude in decimal degrees}
 #' }
 #'
-#' @seealso \code{\link[zooper]{zooper}}
+#' @seealso \href{https://github.com/InteragencyEcologicalProgram/zooper}{zooper}
 "stations"

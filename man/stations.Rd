@@ -17,6 +17,6 @@ stations
 Zooplankton sampling stations in the Sacramento San Joaquin Delta from the zooper package.
 }
 \seealso{
-\code{\link[zooper]{zooper}}
+\href{https://github.com/InteragencyEcologicalProgram/zooper}{zooper}
 }
 \keyword{datasets}
