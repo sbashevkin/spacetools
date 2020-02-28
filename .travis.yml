@@ -10,6 +10,6 @@ addons:
       - gdal-bin
       - libproj-dev
       - libgdal1-dev
-      - libgeos-dev
+      - libgeos-3.7.2
 after_success:
   - Rscript -e 'covr::codecov()'
