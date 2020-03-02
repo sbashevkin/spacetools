@@ -7,11 +7,15 @@
 Pointcluster(
   Points,
   Distance,
+  In_water_distance = FALSE,
   Latitude_column,
   Longitude_column,
   PointID_column,
   Points_crs = 4326,
   Calculation_crs = "+proj=utm +zone=10 ellps=WGS84",
+  Water_map = NULL,
+  Water_map_transitioned = NULL,
+  Grid_size = 75,
   Expand = TRUE
 )
 }
@@ -19,6 +23,8 @@ Pointcluster(
 \item{Points}{A dataframe of points with latitude and longitude}
 
 \item{Distance}{Clustering distance in meters.}
+
+\item{In_water_distance}{Should clustering be based on in-water distance? If yes, in-water distances will be calculated with \code{\link{Waterdist}} and this function will be slower. NOTE: For in-water distances, any points outside the \code{Water_map} shapefile polygons will be moved inside before distances are calculated for clustering. The parameters \code{Water_map}, \code{Water_map_transitioned} and \code{Grid_size} will be ignored unless \code{In_water_distance = TRUE}.}
 
 \item{Latitude_column}{The unquoted name of the column in the \code{Points} dataframe representing Latitude.}
 
@@ -30,6 +36,12 @@ Pointcluster(
 
 \item{Calculation_crs}{Coordinate reference system used for the calculation. If a latitude/longitude system are used, errors may be returned since some calculations assume a planar surface. Defaults to \code{Calculation_crs = "+proj=utm +zone=10 ellps=WGS84"}.}
 
+\item{Water_map}{Object of class sf representing a map of all waterways in your region of interest}
+
+\item{Water_map_transitioned}{A rasterized, transitioned, and geo-corrected version of the water map. This is optional to save time if you will be running this function frequently with the same base map.}
+
+\item{Grid_size}{Grid size (in meters) used to rasterize the map. Defaults to 75.}
+
 \item{Expand}{Should data be expanded at the end? If \code{TRUE} (the default), the result will be expanded so there is 1 row per unique value of the \code{PointID_column}. If \code{FALSE} , the returned object will have 1 row per cluster and a list column with the names of each \code{PointID_column} value contained in each cluster.}
 }
 \value{
@@ -37,6 +49,9 @@ A tibble relating each point to its assigned cluster. The returned Latitude and 
 }
 \description{
 Cluster points within a given distance of one another
+}
+\details{
+The parameters \code{Water_map}, \code{Water_map_transitioned} and \code{Grid_size} will be ignored unless \code{In_water_distance = TRUE}.
 }
 \examples{
 library(tibble)
@@ -52,5 +67,5 @@ Points <- tibble(Latitude = c(38.07194, 38.09306, 38.11722,
                         "EMP NZ030", "FMWT 416", "FMWT 418",
                         "FMWT 602", "TNS 418", "TNS 602",
                         "twentymm 418", "twentymm 602"))
-Points_clust<-Pointcluster(Points, 1000, Latitude, Longitude, ID, Expand=TRUE)
+Points_clust<-Pointcluster(Points, 1000, FALSE, Latitude, Longitude, ID, Expand=TRUE)
 }

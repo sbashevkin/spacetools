@@ -28,4 +28,4 @@
 #' }
 #'
 #' @seealso \href{https://github.com/InteragencyEcologicalProgram/zooper}{zooper}
-"stations"
+"Stations"

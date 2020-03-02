@@ -13,6 +13,7 @@
 #' @section Internal datasets:
 #' \itemize{
 #'   \item \code{\link{Delta}}
+#'   \item \code{\link{Stations}}
 #' }
 #' @docType package
 #' @name spacetools

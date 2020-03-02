@@ -1,4 +1,4 @@
-Points <- spacetools::stations%>%
+Points <- spacetools::Stations%>%
   st_as_sf(coords=c("Longitude", "Latitude"), crs=4326)%>%
   st_transform(crs="+proj=utm +zone=10 ellps=WGS84")
 
