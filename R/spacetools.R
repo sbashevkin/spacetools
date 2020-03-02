@@ -13,7 +13,6 @@
 #' @section Internal datasets:
 #' \itemize{
 #'   \item \code{\link{Delta}}
-#'   \item \code{\link{Delta_transitioned}}
 #' }
 #' @docType package
 #' @name spacetools

@@ -36,7 +36,7 @@
 #'
 #' distance<-Waterdist(Water_map = spacetools::Delta, Points = Points, Latitude_column = Latitude,
 #'                     Longitude_column = Longitude, PointID_column = ID,
-#'                     Water_map_transitioned = spacetools::Delta_transitioned)
+#'                     Water_map_transitioned = Delta_transitioned)
 #'                     }
 #' @export
 

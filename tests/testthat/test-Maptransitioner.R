@@ -5,5 +5,5 @@ test_that("Maptransitioner produces a transition layer", {
 })
 
 test_that("Maptransitioner produces same object stored in Delta_transitioned", {
-  expect_equal(Map, spacetools::Delta_transitioned)
+  expect_equal(Map, Delta_transitioned)
 })

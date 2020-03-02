@@ -1,6 +1,6 @@
 distance<-Waterdist(Water_map = spacetools::Delta, Points = spacetools::stations, Latitude_column = Latitude,
                                          Longitude_column = Longitude, PointID_column = Station,
-                                         Water_map_transitioned = spacetools::Delta_transitioned)
+                                         Water_map_transitioned = Delta_transitioned)
 
 test_that("Waterdist produces something", {
   expect_gt(nrow(distance), 0)

@@ -21,7 +21,6 @@ This package contains functions for easy spatial operations in R, focused on aqu
 
 \itemize{
   \item \code{\link{Delta}}
-  \item \code{\link{Delta_transitioned}}
 }
 }
 
