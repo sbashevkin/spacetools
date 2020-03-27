@@ -4,7 +4,8 @@
 \name{Delta}
 \alias{Delta}
 \title{Delta shapefile}
-\format{a sf tibble with 282 rows and 10 columns.
+\format{
+a sf tibble with 282 rows and 10 columns.
 \describe{
   \item{AREA}{Area.}
   \item{PERIMETER}{Perimeter.}
@@ -15,7 +16,8 @@
   \item{Shape_Leng}{Shape_Length}
   \item{Shape_Area}{Shape_Area.}
   \item{geometry}{Shapefile polygon coordinates.}
-}}
+}
+}
 \usage{
 Delta
 }
