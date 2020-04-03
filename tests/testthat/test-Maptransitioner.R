@@ -1,9 +1,5 @@
-Map <- Maptransitioner(spacetools::Delta, Plot=TRUE)
+Map <- Maptransitioner(filter(spacetools::Delta, HNAME=="SAN FRANCISCO BAY"), Plot=TRUE)
 
 test_that("Maptransitioner produces a transition layer", {
   expect_s4_class(Map, "TransitionLayer")
-})
-
-test_that("Maptransitioner produces same object stored in Delta_transitioned", {
-  expect_equal(Map, Delta_transitioned)
 })
