@@ -14,7 +14,7 @@
 #'
 #' @export
 
-Maptransitioner<-function(Water_map, Calculation_crs= "+proj=utm +zone=10 ellps=WGS84", Grid_size = 75, Process_map = TRUE, Plot = FALSE){
+Maptransitioner<-function(Water_map, Calculation_crs= 32610, Grid_size = 75, Process_map = TRUE, Plot = FALSE){
 
   pb<-utils::txtProgressBar(min = 0, max = 100, style=3)
 

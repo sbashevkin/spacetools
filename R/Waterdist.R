@@ -9,7 +9,7 @@
 #' @param Points_crs Coordinate reference system for your \code{Points} dataframe. Integer with the EPSG code or character with proj4string.
 #' @param Water_map_transitioned A rasterized, transitioned, and geo-corrected version of the water map. This is optional to save time if you will be running this function frequently with the same base map.
 #' @param Grid_size Grid size (in meters) used to rasterize the map. Defaults to 75.
-#' @param Calculation_crs Coordinate reference system used for the calculation. If a latitude/longitude system are used, errors may be returned since some calculations assume a planar surface. Defaults to \code{Calculation_crs = "+proj=utm +zone=10 ellps=WGS84"}.
+#' @param Calculation_crs Coordinate reference system used for the calculation. If a latitude/longitude system are used, errors may be returned since some calculations assume a planar surface. Defaults to \code{Calculation_crs = 32610}.
 #' @keywords spatial distance water raster
 #' @importFrom magrittr %>%
 #' @importFrom methods as
@@ -47,7 +47,7 @@ Waterdist <- function(Water_map,
                       PointID_column,
                       Points_crs = 4326,
                       Water_map_transitioned = NULL,
-                      Calculation_crs = "+proj=utm +zone=10 ellps=WGS84",
+                      Calculation_crs = 32610,
                       Grid_size = 75){
 
   pb<-utils::txtProgressBar(min = 0, max = 100, style=3)

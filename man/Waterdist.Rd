@@ -12,7 +12,7 @@ Waterdist(
   PointID_column,
   Points_crs = 4326,
   Water_map_transitioned = NULL,
-  Calculation_crs = "+proj=utm +zone=10 ellps=WGS84",
+  Calculation_crs = 32610,
   Grid_size = 75
 )
 }
@@ -31,7 +31,7 @@ Waterdist(
 
 \item{Water_map_transitioned}{A rasterized, transitioned, and geo-corrected version of the water map. This is optional to save time if you will be running this function frequently with the same base map.}
 
-\item{Calculation_crs}{Coordinate reference system used for the calculation. If a latitude/longitude system are used, errors may be returned since some calculations assume a planar surface. Defaults to \code{Calculation_crs = "+proj=utm +zone=10 ellps=WGS84"}.}
+\item{Calculation_crs}{Coordinate reference system used for the calculation. If a latitude/longitude system are used, errors may be returned since some calculations assume a planar surface. Defaults to \code{Calculation_crs = 32610}.}
 
 \item{Grid_size}{Grid size (in meters) used to rasterize the map. Defaults to 75.}
 }

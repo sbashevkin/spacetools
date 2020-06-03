@@ -27,13 +27,13 @@ Points <- tibble(Latitude = c(38.23333, 38.04813, 38.05920,
                  ID = c("EMP NZP02", "FMWT 508", "FMWT 513",
                         "FMWT 915", "FMWT 723", "FMWT 796"))\%>\%
 st_as_sf(coords=c("Longitude", "Latitude"), crs=4326)\%>\%
-  st_transform(crs="+proj=utm +zone=10 ellps=WGS84")
+  st_transform(crs=32610)
 
 Map <- st_union(spacetools::Delta)\%>\%
 st_as_sf()\%>\%
   mutate(Inside=TRUE)\%>\%
   rename(geometry = x)\%>\%
-  st_transform(crs="+proj=utm +zone=10 ellps=WGS84")
+  st_transform(crs=32610)
 
 Points_joined <- st_join(Points, Map, join = st_intersects)
 

@@ -12,7 +12,7 @@ Pointcluster(
   Longitude_column,
   PointID_column,
   Points_crs = 4326,
-  Calculation_crs = "+proj=utm +zone=10 ellps=WGS84",
+  Calculation_crs = 32610,
   Water_map = NULL,
   Water_map_transitioned = NULL,
   Grid_size = 75,
@@ -34,7 +34,7 @@ Pointcluster(
 
 \item{Points_crs}{Coordinate reference system for your \code{Points} dataframe. Integer with the EPSG code or character with proj4string.}
 
-\item{Calculation_crs}{Coordinate reference system used for the calculation. If a latitude/longitude system are used, errors may be returned since some calculations assume a planar surface. Defaults to \code{Calculation_crs = "+proj=utm +zone=10 ellps=WGS84"}.}
+\item{Calculation_crs}{Coordinate reference system used for the calculation. If a latitude/longitude system are used, errors may be returned since some calculations assume a planar surface. Defaults to \code{Calculation_crs = 32610}.}
 
 \item{Water_map}{Object of class sf representing a map of all waterways in your region of interest}
 
