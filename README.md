@@ -11,6 +11,8 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 status](https://travis-ci.org/sbashevkin/spacetools.svg?branch=master)](https://travis-ci.org/sbashevkin/spacetools)
 [![Codecov test
 coverage](https://codecov.io/gh/sbashevkin/spacetools/branch/master/graph/badge.svg)](https://codecov.io/gh/sbashevkin/spacetools?branch=master)
+[![R build
+status](https://github.com/sbashevkin/spacetools/workflows/R-CMD-check/badge.svg)](https://github.com/sbashevkin/spacetools/actions)
 <!-- badges: end -->
 
 The goal of spacetools is to provide easy tools for spatial operations.
