@@ -1,8 +1,11 @@
+Map<-spacetools::Delta
+st_crs(Map)<-4269
+
 Points <- spacetools::Stations%>%
   st_as_sf(coords=c("Longitude", "Latitude"), crs=4326)%>%
   st_transform(crs=32610)
 
-Map <- st_union(spacetools::Delta)%>%
+Map <- st_union(Map)%>%
   st_as_sf()%>%
   mutate(Inside=TRUE)%>%
   rename(geometry = x)%>%

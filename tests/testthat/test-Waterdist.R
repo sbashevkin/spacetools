@@ -1,3 +1,6 @@
+Map<-spacetools::Delta
+st_crs(Map)<-4269
+
 distance<-Waterdist(Water_map = spacetools::Delta, Points = spacetools::Stations, Latitude_column = Latitude,
                                          Longitude_column = Longitude, PointID_column = Station,
                                          Water_map_transitioned = Delta_transitioned)
