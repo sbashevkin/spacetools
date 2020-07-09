@@ -17,6 +17,7 @@ Pointmover(Data, Attribute, Shapefile)
 Move points to closest location within shapefile
 }
 \examples{
+\dontrun{
 library(tibble)
 library(dplyr)
 library(sf)
@@ -38,6 +39,7 @@ st_as_sf()\%>\%
 Points_joined <- st_join(Points, Map, join = st_intersects)
 
 Points_fixed<-Pointmover(Points_joined, Inside, Map)
+}
 }
 \seealso{
 \code{\link{Waterdist}}
