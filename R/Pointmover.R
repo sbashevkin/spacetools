@@ -6,6 +6,7 @@
 #' @param Shapefile Object of class sf representing the shapefile you want all points to fall within.
 #' @seealso \code{\link{Waterdist}}
 #' @examples
+#' \dontrun{
 #' library(tibble)
 #' library(dplyr)
 #' library(sf)
@@ -27,6 +28,7 @@
 #' Points_joined <- st_join(Points, Map, join = st_intersects)
 #'
 #' Points_fixed<-Pointmover(Points_joined, Inside, Map)
+#' }
 #' @export
 
 Pointmover <- function(Data, Attribute, Shapefile){
