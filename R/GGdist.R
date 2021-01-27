@@ -130,7 +130,9 @@ GGate = data.frame(Latitude = -122.478041, Longitude = 37.819539, ID = "Golden G
 
   utils::setTxtProgressBar(pb, 90)
 
-  waterDist <- gdistance::costDistance(Water_map_transitioned, sf::st_coordinates(Points_joined))
+  waterDist <- gdistance::costDistance(Water_map_transitioned,
+                                       fromCoords =  sf::st_coordinates(Points_joined),
+                                       toCoords = sf::st_coordinates(EndPoint))
 
   waterDist <- as.matrix(waterDist)
   colnames(waterDist) <- rownames(waterDist) <- Points_joined%>% sf::st_drop_geometry()%>% dplyr::pull(!!PointID_column)
@@ -140,7 +142,8 @@ GGate = data.frame(Latitude = -122.478041, Longitude = 37.819539, ID = "Golden G
   return(waterDist)
 }
 
+
 distance<-GGdist(Water_map = spacetools::Delta, Points = Stations, Latitude_column = Latitude,
                      Longitude_column = Longitude, PointID_column =Station,
                      Water_map_transitioned = Delta_transitioned)
-                     }
+
