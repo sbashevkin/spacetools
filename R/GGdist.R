@@ -53,7 +53,7 @@ GGdist <- function(Water_map,
                       Grid_size = 75){
 
   pb<-utils::txtProgressBar(min = 0, max = 100, style=3)
-
+  ggnames = c(Latitude_column, Longitude_column, PointID_column)
   Latitude_column<-rlang::enquo(Latitude_column)
   Longitude_column<-rlang::enquo(Longitude_column)
   PointID_column<-rlang::enquo(PointID_column)
@@ -79,10 +79,13 @@ GGdist <- function(Water_map,
   Water_map <- sf::st_transform(Water_map, crs=Calculation_crs)
 
   #Create a data frame containing a single point (the Golden Gate)
-  #rename teh data frame with the same names as the latitude and longitude columns in the main data set.
-GGate = data.frame(Latitude = -122.478041, Longitude = 37.819539, ID = "Golden Gate") %>%
-  rename(!!Longitude_column = Longitude, rlang::as_name(Latitude_column) = Latitude, rlang::as_name(PointID_column) = ID)
+  #with the same names as the latitude and longitude columns in the main data set.
 
+
+GGate = data.frame(Long = 37.819539,
+                   Lat = -122.478041,
+                   ID = "Golden Gate")
+names(GGate) = ggnames
   if(is.null(EndPoint)){
     EndPoint = GGate %>%
       sf::st_as_sf(coords=c(rlang::as_name(Longitude_column), rlang::as_name(Latitude_column)), crs=Points_crs)%>%
@@ -124,7 +127,8 @@ GGate = data.frame(Latitude = -122.478041, Longitude = 37.819539, ID = "Golden G
 
   if(is.null(Water_map_transitioned)){
 
-    Water_map_transitioned <- Maptransitioner(Water_map = Water_map, Calculation_crs = Calculation_crs, Grid_size = Grid_size, Process_map = FALSE)
+    Water_map_transitioned <- Maptransitioner(Water_map = Water_map, Calculation_crs = Calculation_crs,
+                                              Grid_size = Grid_size, Process_map = TRUE)
 
   }
 
@@ -133,17 +137,12 @@ GGate = data.frame(Latitude = -122.478041, Longitude = 37.819539, ID = "Golden G
   waterDist <- gdistance::costDistance(Water_map_transitioned,
                                        fromCoords =  sf::st_coordinates(Points_joined),
                                        toCoords = sf::st_coordinates(EndPoint))
-
   waterDist <- as.matrix(waterDist)
-  colnames(waterDist) <- rownames(waterDist) <- Points_joined%>% sf::st_drop_geometry()%>% dplyr::pull(!!PointID_column)
+  rownames(waterDist) <- Points_joined%>% sf::st_drop_geometry()%>% dplyr::pull(!!PointID_column)
+  colnames(waterDist) <- EndPoint%>% sf::st_drop_geometry()%>% dplyr::pull(!!PointID_column)
 
   utils::setTxtProgressBar(pb, 100)
 
   return(waterDist)
 }
-
-
-distance<-GGdist(Water_map = spacetools::Delta, Points = Stations, Latitude_column = Latitude,
-                     Longitude_column = Longitude, PointID_column =Station,
-                     Water_map_transitioned = Delta_transitioned)
 
