@@ -1,11 +1,11 @@
 #' In-water distances between a set of points and the Golden Gate
 #'
-#' Calculate a distance matrix for a set of points based on in-water distances, using a raster-based approach
+#' Calculate a distance matrix for a set of points based on in-water distances, using a raster-based approach.
 #' @param Water_map Object of class sf representing a map of all waterways in your region of interest
 #' @param Points A dataframe of points with latitude and longitude which you would like to calculate distance to a given reference point.
-#' @param EndPoint A dataframe containing a single point with latitude and longitude. Defaults to the Golden Gate. (37.819539, -122.478041) Latitude and longitude column IDs should be the same as the points data frame.
-#' @param Latitude_column The unquoted name of the column in the \code{Points} dataframe representing Latitude.
-#' @param Longitude_column The unquoted name of the column in the \code{Points} dataframe representing Longitude.
+#' @param EndPoint A dataframe containing a single point with latitude and longitude. Defaults to a point 0.1 degrees East of the Golden Gate (37.819539, -122.378041). Latitude and longitude column names must be the same as the points data frame. This point must fall within the bounds of the \code{Water_map}.
+#' @param Latitude_column The unquoted name of the column in the \code{Points} and \code{EndPoint} dataframe representing Latitude.
+#' @param Longitude_column The unquoted name of the column in the \code{Points} and \code{EndPoint} dataframe representing Longitude.
 #' @param PointID_column The unquoted name of the column in the \code{Points} dataframe with the unique identifier of each point.
 #' @param Points_crs Coordinate reference system for your \code{Points} dataframe. Integer with the EPSG code or character with proj4string.
 #' @param Water_map_transitioned A rasterized, transitioned, and geo-corrected version of the water map. This is optional to save time if you will be running this function frequently with the same base map.
@@ -13,9 +13,8 @@
 #' @param Calculation_crs Coordinate reference system used for the calculation. If a latitude/longitude system are used, errors may be returned since some calculations assume a planar surface. Defaults to \code{Calculation_crs = 32610}.
 #' @keywords spatial distance water raster
 #' @importFrom magrittr %>%
-#' @importFrom methods as
 #' @importFrom rlang .data
-#' @return Distance matrix.
+#' @return A tibble with 1 column for the PointID_column values and another with the distances from the EndPoint.
 #' @seealso \code{\link{Maptransitioner}} \code{\link{Pointmover}}
 #' @examples
 #' library(tibble)
@@ -42,18 +41,17 @@
 #' @export
 
 GGdist <- function(Water_map,
-                      Points,
+                   Points,
                    EndPoint = NULL,
-                      Latitude_column,
-                      Longitude_column,
-                      PointID_column,
-                      Points_crs = 4326,
-                      Water_map_transitioned = NULL,
-                      Calculation_crs = 32610,
-                      Grid_size = 75){
+                   Latitude_column,
+                   Longitude_column,
+                   PointID_column,
+                   Points_crs = 4326,
+                   Water_map_transitioned = NULL,
+                   Calculation_crs = 32610,
+                   Grid_size = 75){
 
   pb<-utils::txtProgressBar(min = 0, max = 100, style=3)
-  ggnames = c(Latitude_column, Longitude_column, PointID_column)
   Latitude_column<-rlang::enquo(Latitude_column)
   Longitude_column<-rlang::enquo(Longitude_column)
   PointID_column<-rlang::enquo(PointID_column)
@@ -64,7 +62,9 @@ GGdist <- function(Water_map,
 
   #Collapse water map into 1 multipolygon
 
-  Water_map <- sf::st_union(Water_map)%>%
+  Water_map <- Water_map%>%
+    sf::st_transform(crs=Calculation_crs)%>%
+    sf::st_union()%>%
     sf::st_as_sf()%>%
     dplyr::mutate(Inside=TRUE)%>%
     dplyr::rename(geometry = .data$x)
@@ -76,27 +76,28 @@ GGdist <- function(Water_map,
     sf::st_as_sf(coords=c(rlang::as_name(Longitude_column), rlang::as_name(Latitude_column)), crs=Points_crs)%>%
     sf::st_transform(crs=Calculation_crs)
 
-  Water_map <- sf::st_transform(Water_map, crs=Calculation_crs)
-
   #Create a data frame containing a single point (the Golden Gate)
   #with the same names as the latitude and longitude columns in the main data set.
 
 
-GGate = data.frame(Long = 37.819539,
-                   Lat = -122.478041,
-                   ID = "Golden Gate")
-names(GGate) = ggnames
   if(is.null(EndPoint)){
-    EndPoint = GGate %>%
+    EndPoint <- tibble::tibble(!!Longitude_column := -122.378041,
+                               !!Latitude_column := 37.819539) %>%
       sf::st_as_sf(coords=c(rlang::as_name(Longitude_column), rlang::as_name(Latitude_column)), crs=Points_crs)%>%
       sf::st_transform(crs=Calculation_crs)
 
   } else {
-    EndPoint%>%
-      dplyr::select(!!Longitude_column, !!Latitude_column, !!PointID_column)%>%
+    EndPoint<-EndPoint%>%
+      dplyr::select(!!Longitude_column, !!Latitude_column)%>%
       sf::st_as_sf(coords=c(rlang::as_name(Longitude_column), rlang::as_name(Latitude_column)), crs=Points_crs)%>%
       sf::st_transform(crs=Calculation_crs)
 
+  }
+
+  EndPoint_joined<-sf::st_join(EndPoint, Water_map, join = sf::st_intersects)
+
+  if(!all(!is.na(EndPoint_joined$Inside))){
+    stop("The Endpoint is not within the water shapefile. Please choose an Endpoint within the water shapefile")
   }
 
   # Are all points in the water polygon? (st_intersects returns a null object when there is no intersection)
@@ -123,6 +124,8 @@ names(GGate) = ggnames
 
   if(!all(!is.na(Points_joined$Inside))){
     stop("Points could not be moved within shapefile.")
+  } else{
+    message("Not all points were within the water shapefile so they were moved to fall within the water shapefile using spacetools::Pointmover.")
   }
 
   if(is.null(Water_map_transitioned)){
@@ -132,14 +135,12 @@ names(GGate) = ggnames
 
   }
 
-  utils::setTxtProgressBar(pb, 90)
+  utils::setTxtProgressBar(pb, 70)
 
   waterDist <- gdistance::costDistance(Water_map_transitioned,
                                        fromCoords =  sf::st_coordinates(Points_joined),
                                        toCoords = sf::st_coordinates(EndPoint))
-  waterDist <- as.matrix(waterDist)
-  rownames(waterDist) <- Points_joined%>% sf::st_drop_geometry()%>% dplyr::pull(!!PointID_column)
-  colnames(waterDist) <- EndPoint%>% sf::st_drop_geometry()%>% dplyr::pull(!!PointID_column)
+  waterDist<-tibble::tibble(!!PointID_column:=Points_joined%>% sf::st_drop_geometry()%>% dplyr::pull(!!PointID_column), Distance=as.numeric(waterDist))
 
   utils::setTxtProgressBar(pb, 100)
 

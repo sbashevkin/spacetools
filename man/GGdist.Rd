@@ -22,11 +22,11 @@ GGdist(
 
 \item{Points}{A dataframe of points with latitude and longitude which you would like to calculate distance to a given reference point.}
 
-\item{EndPoint}{A dataframe containing a single point with latitude and longitude. Defaults to the Golden Gate. (37.819539, -122.478041) Latitude and longitude column IDs should be the same as the points data frame.}
+\item{EndPoint}{A dataframe containing a single point with latitude and longitude. Defaults to a point 0.1 degrees East of the Golden Gate (37.819539, -122.378041). Latitude and longitude column names must be the same as the points data frame. This point must fall within the bounds of the \code{Water_map}.}
 
-\item{Latitude_column}{The unquoted name of the column in the \code{Points} dataframe representing Latitude.}
+\item{Latitude_column}{The unquoted name of the column in the \code{Points} and \code{EndPoint} dataframe representing Latitude.}
 
-\item{Longitude_column}{The unquoted name of the column in the \code{Points} dataframe representing Longitude.}
+\item{Longitude_column}{The unquoted name of the column in the \code{Points} and \code{EndPoint} dataframe representing Longitude.}
 
 \item{PointID_column}{The unquoted name of the column in the \code{Points} dataframe with the unique identifier of each point.}
 
@@ -39,10 +39,10 @@ GGdist(
 \item{Grid_size}{Grid size (in meters) used to rasterize the map. Defaults to 75.}
 }
 \value{
-Distance matrix.
+A tibble with 1 column for the PointID_column values and another with the distances from the EndPoint.
 }
 \description{
-Calculate a distance matrix for a set of points based on in-water distances, using a raster-based approach
+Calculate a distance matrix for a set of points based on in-water distances, using a raster-based approach.
 }
 \examples{
 library(tibble)

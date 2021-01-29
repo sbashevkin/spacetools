@@ -12,7 +12,6 @@
 #' @param Calculation_crs Coordinate reference system used for the calculation. If a latitude/longitude system are used, errors may be returned since some calculations assume a planar surface. Defaults to \code{Calculation_crs = 32610}.
 #' @keywords spatial distance water raster
 #' @importFrom magrittr %>%
-#' @importFrom methods as
 #' @importFrom rlang .data
 #' @return Distance matrix.
 #' @seealso \code{\link{Maptransitioner}} \code{\link{Pointmover}}
@@ -62,7 +61,9 @@ Waterdist <- function(Water_map,
 
   #Collapse water map into 1 multipolygon
 
-  Water_map <- sf::st_union(Water_map)%>%
+  Water_map <- Water_map%>%
+    sf::st_transform(crs=Calculation_crs)%>%
+    sf::st_union()%>%
     sf::st_as_sf()%>%
     dplyr::mutate(Inside=TRUE)%>%
     dplyr::rename(geometry = .data$x)
@@ -73,8 +74,6 @@ Waterdist <- function(Water_map,
     dplyr::select(!!Longitude_column, !!Latitude_column, !!PointID_column)%>%
     sf::st_as_sf(coords=c(rlang::as_name(Longitude_column), rlang::as_name(Latitude_column)), crs=Points_crs)%>%
     sf::st_transform(crs=Calculation_crs)
-
-  Water_map <- sf::st_transform(Water_map, crs=Calculation_crs)
 
   # Are all points in the water polygon? (st_intersects returns a null object when there is no intersection)
 
@@ -100,6 +99,8 @@ Waterdist <- function(Water_map,
 
   if(!all(!is.na(Points_joined$Inside))){
     stop("Points could not be moved within shapefile.")
+  } else{
+    message("Not all points were within the water shapefile so they were moved to fall within the water shapefile using spacetools::Pointmover.")
   }
 
   if(is.null(Water_map_transitioned)){
