@@ -22,7 +22,7 @@ GGdist(
 
 \item{Points}{A dataframe of points with latitude and longitude which you would like to calculate distance to a given reference point.}
 
-\item{EndPoint}{A dataframe containing a single point with latitude and longitude. Defaults to a point 0.1 degrees East of the Golden Gate (37.819539, -122.378041). Latitude and longitude column names must be the same as the points data frame. This point must fall within the bounds of the \code{Water_map}.}
+\item{EndPoint}{A dataframe containing a single point with latitude and longitude. Defaults to a point 92 m East of the Golden Gate (37.819539, -122.477). Latitude and longitude column names must be the same as the points data frame. This point must fall within the bounds of the \code{Water_map}.}
 
 \item{Latitude_column}{The unquoted name of the column in the \code{Points} and \code{EndPoint} dataframe representing Latitude.}
 

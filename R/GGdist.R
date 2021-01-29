@@ -3,7 +3,7 @@
 #' Calculate a distance matrix for a set of points based on in-water distances, using a raster-based approach.
 #' @param Water_map Object of class sf representing a map of all waterways in your region of interest
 #' @param Points A dataframe of points with latitude and longitude which you would like to calculate distance to a given reference point.
-#' @param EndPoint A dataframe containing a single point with latitude and longitude. Defaults to a point 0.1 degrees East of the Golden Gate (37.819539, -122.378041). Latitude and longitude column names must be the same as the points data frame. This point must fall within the bounds of the \code{Water_map}.
+#' @param EndPoint A dataframe containing a single point with latitude and longitude. Defaults to a point 92 m East of the Golden Gate (37.819539, -122.477). Latitude and longitude column names must be the same as the points data frame. This point must fall within the bounds of the \code{Water_map}.
 #' @param Latitude_column The unquoted name of the column in the \code{Points} and \code{EndPoint} dataframe representing Latitude.
 #' @param Longitude_column The unquoted name of the column in the \code{Points} and \code{EndPoint} dataframe representing Longitude.
 #' @param PointID_column The unquoted name of the column in the \code{Points} dataframe with the unique identifier of each point.
@@ -81,7 +81,7 @@ GGdist <- function(Water_map,
 
 
   if(is.null(EndPoint)){
-    EndPoint <- tibble::tibble(!!Longitude_column := -122.378041,
+    EndPoint <- tibble::tibble(!!Longitude_column := -122.477,
                                !!Latitude_column := 37.819539) %>%
       sf::st_as_sf(coords=c(rlang::as_name(Longitude_column), rlang::as_name(Latitude_column)), crs=Points_crs)%>%
       sf::st_transform(crs=Calculation_crs)
