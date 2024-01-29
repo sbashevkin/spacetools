@@ -22,7 +22,7 @@ Maptransitioner<-function(Water_map, Calculation_crs= 32610, Grid_size = 75, Pro
     Water_map <- sf::st_union(Water_map)%>%
       sf::st_as_sf()%>%
       dplyr::mutate(Inside=TRUE)%>%
-      dplyr::rename(geometry = .data$x)%>%
+      dplyr::rename(geometry = "x")%>%
       sf::st_transform(crs=Calculation_crs)
   }
 

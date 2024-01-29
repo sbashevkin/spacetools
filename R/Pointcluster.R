@@ -68,12 +68,12 @@ Pointcluster <- function(Points,
   Points_clust <- Points_clust%>%
     dplyr::mutate(Clust = clusters)%>%
     sf::st_drop_geometry()%>%
-    dplyr::select(!!PointID_column, .data$Clust)
+    dplyr::select(!!PointID_column, "Clust")
 
   # Join clusters to original dataset
   Points_clust<-Points%>%
     dplyr::left_join(Points_clust, by=rlang::as_name(PointID_column))%>%
-    dplyr::group_by(.data$Clust)%>%
+    dplyr::group_by("Clust")%>%
     dplyr::summarise(!!Latitude_column := mean(!!Latitude_column), !!Longitude_column := mean(!!Longitude_column), !!PointID_column := list(!!PointID_column))%>%
     dplyr::ungroup()%>%
     {if(Expand){

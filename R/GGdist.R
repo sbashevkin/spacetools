@@ -67,7 +67,7 @@ GGdist <- function(Water_map,
     sf::st_union()%>%
     sf::st_as_sf()%>%
     dplyr::mutate(Inside=TRUE)%>%
-    dplyr::rename(geometry = .data$x)
+    dplyr::rename(geometry = "x")
 
   utils::setTxtProgressBar(pb, 5)
 
